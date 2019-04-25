@@ -1,25 +1,109 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "loco";
+class apps{
+		
+		public $hostname = "localhost";
+		public $username = "root";
+		public $password = "";
+		public $database = "loco";
+		public $links;
+		
+		public function __construct(){
+			$this->links = mysqli_connect($this->hostname,$this->username,$this->password,$this->database);
+			if($this->links->connect_error){
+				echo "no connected";
+			}else{
+				echo "connected";
+			}
+		}
+		
+		public function insert($insert){
+			$insert = $this->links->query($insert);
+			if($insert){
+				throw new exception;
+			}
+		}
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
 
-$sql = "INSERT INTO `ticket_form` (`trip_type`, `flying_from`, `flying_to`, `departing`, `returning`, `Adults`, `Child`, `Class`, `id`) VALUES ('Roundtrip', 'Abu Dhabi', 'Dhaka', '2019-04-17', '2019-04-09', '1', '2', 'Master', NULL)";
+	}
 
-if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-}
 
-$conn->close();
+
+if(isset($_POST['submit'])){
+		
+		
+		
+		$trip_type = $_POST['trip_type'];
+		$flying_from = $_POST['flying_from'];
+		$flying_to = $_POST['flying_to'];
+		$departing = $_POST['departing'];
+		$returning = $_POST['returning'];
+		$Adults = $_POST['Adults'];
+		$Child = $_POST['Child'];
+		$Class = $_POST['Class'];
+		$select_airlines=$_POST['select_airlines'];
+		$error = 0;
+		$msg = "";
+		
+		if($trip_type == ""){
+			$error = $error+1;
+			$user_error = "<span style='color:#f00'>* trip type required</span>";
+			$msg .= "<p style='color:#f00'>* Username Required</p>";
+		}
+		if($flying_from == ""){
+			$error = $error+1;
+			$msg .= "<p style='color:#f00'>* password Required</p>";
+		}
+		if($flying_to == ""){
+			$error = $error+1;
+			$msg .= "<p style='color:#f00'>* email Required</p>";
+		}
+		if($departing == ""){
+			$error = $error+1;
+			$msg .= "<p style='color:#f00'>* address Required</p>";
+		}
+		if($returning == ""){
+			$error = $error+1;
+			$msg .= "<p style='color:#f00'>* Image Required</p>";
+		}
+		if($Adults == ""){
+			$error = $error+1;
+			$msg .= "<p style='color:#f00'>* Image Required</p>";
+		}
+		if($Child == ""){
+			$error = $error+1;
+			$msg .= "<p style='color:#f00'>* Image Required</p>";
+		}
+		if($Class == ""){
+			$error = $error+1;
+			$msg .= "<p style='color:#f00'>* Image Required</p>";
+		}
+		if($select_airlines == ""){
+			$error = $error+1;
+			$msg .= "<p style='color:#f00'>* Image Required</p>";
+		}
+		if($error == 0){
+		
+			$insert = "INSERT INTO ticket_form VALUES('$trip_type', '$flying_from', '$flying_to','$departing', '$returning','$Adults', '$Child', '$Class', 'select_airlines', '')";
+			if($insert){
+				try{
+					$object = new apps;
+					$object->insert($insert);
+					echo "Not inserted";
+				}catch(exception $e){
+					echo "inserted";
+					
+				}
+			}
+		
+		
+		}else{
+			echo $msg;
+		}
+	}
+
+
+
+
 ?>
 
 
@@ -57,11 +141,11 @@ $conn->close();
 		<div class="section-center">
 
 
-									<div class="form-btn" style="padding-left: 1100px;padding-top: -100px;padding-bottom: 70px;border-radius: 4px solid red;">
+									<div class="form-btn" style="padding-left: 1100px;padding-top: -100px;padding-bottom: 70px;">
 										<a href="login-page/index.php"><button class="submit-btn" style="background-color: orange;">LOG IN/SIGN UP</button></a>
 									</div>
 								
-
+<form action="" method="post">
 			<div class="container">
 				<div class="row">
 					<div class="booking-form">
@@ -69,15 +153,15 @@ $conn->close();
 							<div class="form-group">
 								<div class="form-checkbox">
 									<label for="roundtrip">
-										<input type="radio" id="roundtrip" name="flight-type">
+										<input type="radio" id="roundtrip" name="trip_type">
 										<span></span>Roundtrip
 									</label>
 									<label for="one-way">
-										<input type="radio" id="one-way" name="flight-type">
+										<input type="radio" id="one-way" name="trip_type">
 										<span></span>One way
 									</label>
 									<label for="multi-city">
-										<input type="radio" id="multi-city" name="flight-type">
+										<input type="radio" id="multi-city" name="trip_type">
 										<span></span>Multi-City
 									</label>
 								</div>
@@ -86,7 +170,7 @@ $conn->close();
 								<div class="col-md-3">
 									<div class="form-group">
 										<span class="form-label">Flying From</span>
-										<select class="form-control">
+										<select class="form-control" name="flying_from">
 											<option>Abu Dhabi</option>
 											<option>Bangkok</option>
 											<option>Chittagong</option>
@@ -103,7 +187,7 @@ $conn->close();
 								<div class="col-md-3">
 									<div class="form-group">
 										<span class="form-label">Flying To</span>
-										<select class="form-control">
+										<select class="form-control" name="flying_to">
 											<option>Abu Dhabi</option>
 											<option>Bangkok</option>
 											<option>Chittagong</option>
@@ -122,19 +206,19 @@ $conn->close();
 								<div class="col-md-3">
 									<div class="form-group">
 										<span class="form-label">Departing</span>
-										<input class="form-control" type="date" required>
+										<input class="form-control" type="date" name="departing" required>
 									</div>
 								</div>
 								<div class="col-md-3">
 									<div class="form-group">
 										<span class="form-label">Returning</span>
-										<input class="form-control" type="date" required>
+										<input class="form-control" type="date" name="returning" required>
 									</div>
 								</div>
 								<div class="col-md-2">
 									<div class="form-group">
 										<span class="form-label">Adults (18+)</span>
-										<select class="form-control">
+										<select class="form-control" name="Adults">
 											<option>1</option>
 											<option>2</option>
 											<option>3</option>
@@ -145,7 +229,7 @@ $conn->close();
 								<div class="col-md-2">
 									<div class="form-group">
 										<span class="form-label">Children (0-17)</span>
-										<select class="form-control">
+										<select class="form-control" name="Child">
 											<option>0</option>
 											<option>1</option>
 											<option>2</option>
@@ -158,7 +242,7 @@ $conn->close();
 								<div class="col-md-3">
 									<div class="form-group">
 										<span class="form-label">Travel class</span>
-										<select class="form-control">
+										<select class="form-control" name="Class">
 											<option>Economy class</option>
 											<option>Business class</option>
 											<option>First class</option>
@@ -169,7 +253,7 @@ $conn->close();
 								<div class="col-md-3">
 									<div class="form-group">
 										<span class="form-label">Select Airlines</span>
-										<select class="form-control">
+										<select class="form-control" name="select_airlines">
 											<option>Biman Bangladesh</option>
 											<option>Qantas Airways</option>
 											<option>Jet Airways</option>
@@ -182,7 +266,7 @@ $conn->close();
 								</div>
 								<div class="col-md-3">
 									<div class="form-btn">
-										<button class="submit-btn">SUBMIT</button>
+										<button class="submit-btn" name="submit">SUBMIT</button>
 									</div>
 								</div>
 							</div>
@@ -193,6 +277,7 @@ $conn->close();
 					</div>
 				</div>
 			</div>
+		</form>
 		</div>
 	</div>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
