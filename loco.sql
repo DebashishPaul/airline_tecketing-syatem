@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2019 at 01:17 PM
+-- Generation Time: Apr 25, 2019 at 08:17 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -37,6 +37,7 @@ CREATE TABLE `ticket_form` (
   `Adults` int(10) NOT NULL,
   `Child` int(10) NOT NULL,
   `Class` varchar(50) NOT NULL,
+  `select_airlines` varchar(20) NOT NULL,
   `id` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44,15 +45,16 @@ CREATE TABLE `ticket_form` (
 -- Dumping data for table `ticket_form`
 --
 
-INSERT INTO `ticket_form` (`trip_type`, `flying_from`, `flying_to`, `departing`, `returning`, `Adults`, `Child`, `Class`, `id`) VALUES
-('Roundtrip', 'Abu Dhabi', 'Dhaka', '2019-04-17', '2019-04-09', 1, 2, 'Master', 1),
-('Roundtrip', 'Abu Dhabi', 'Dhaka', '2019-04-17', '2019-04-09', 1, 2, 'Master', 2),
-('Roundtrip', 'Abu Dhabi', 'Dhaka', '2019-04-17', '2019-04-09', 1, 2, 'Master', 3),
-('Roundtrip', 'Abu Dhabi', 'Dhaka', '2019-04-17', '2019-04-09', 1, 2, 'Master', 4),
-('Roundtrip', 'Abu Dhabi', 'Dhaka', '2019-04-17', '2019-04-09', 1, 2, 'Master', 5),
-('Roundtrip', 'Abu Dhabi', 'Dhaka', '2019-04-17', '2019-04-09', 1, 2, 'Master', 6),
-('Roundtrip', 'Abu Dhabi', 'Dhaka', '2019-04-17', '2019-04-09', 1, 2, 'Master', 7),
-('Roundtrip', 'Abu Dhabi', 'Dhaka', '2019-04-17', '2019-04-09', 1, 2, 'Master', 8);
+INSERT INTO `ticket_form` (`trip_type`, `flying_from`, `flying_to`, `departing`, `returning`, `Adults`, `Child`, `Class`, `select_airlines`, `id`) VALUES
+('on', 'Abu Dhabi', 'Abu Dhabi', '2019-04-03', '2019-04-15', 1, 0, 'Economy class', '', 10),
+('on', 'Sylhet', 'Heathrow', '2019-04-10', '2019-04-15', 3, 2, 'Business class', '', 11),
+('on', 'Abu Dhabi', 'Abu Dhabi', '2019-04-10', '2019-04-24', 1, 0, 'Economy class', 'select_airlines', 12),
+('on', 'Abu Dhabi', 'Abu Dhabi', '2019-04-10', '2019-04-24', 1, 0, 'Economy class', 'select_airlines', 13),
+('on', 'Abu Dhabi', 'Abu Dhabi', '2019-04-10', '2019-04-24', 1, 0, 'Economy class', 'select_airlines', 14),
+('on', 'Abu Dhabi', 'Abu Dhabi', '2019-04-27', '2019-04-18', 1, 0, 'Economy class', 'select_airlines', 15),
+('on', 'Abu Dhabi', 'Abu Dhabi', '2019-04-27', '2019-04-18', 1, 0, 'Economy class', 'select_airlines', 16),
+('on', 'Abu Dhabi', 'Abu Dhabi', '2019-04-27', '2019-04-18', 1, 0, 'Economy class', 'select_airlines', 17),
+('on', 'Brisbane', 'Heathrow', '2019-07-10', '2019-10-23', 3, 2, 'Business class', 'select_airlines', 18);
 
 -- --------------------------------------------------------
 
@@ -97,7 +99,7 @@ ALTER TABLE `ticket_form`
 -- AUTO_INCREMENT for table `ticket_form`
 --
 ALTER TABLE `ticket_form`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
